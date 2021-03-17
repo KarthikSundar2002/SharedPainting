@@ -9,13 +9,10 @@ function setup() {
   HOST = location.origin.replace(/^http/, 'ws')
   socket = io.connect(HOST);
 
-  socket.on('mouse',
-
-    function(data) {
-
+  socket.on('mouse',(data) => {
       fill(data.color);
-      noStroke();
-      ellipse(data.x, data.y, 20, 20);
+      stroke(data.color);
+      line(data.x, data.y, data.px, data.py);
     }
   );
 }
@@ -27,20 +24,22 @@ function draw() {
 function mouseDragged() {
   color1 = colorPicker.value();
   fill(colorPicker.value());
-  noStroke();
-  ellipse(mouseX,mouseY,20,20);
+  stroke(colorPicker.value());
 
-  sendmouse(mouseX,mouseY,color1);
+  line(mouseX, mouseY, pmouseX, pmouseY);
+  sendmouse(mouseX,mouseY,color1,pmouseX,pmouseY);
 }
 
-function sendmouse(xpos, ypos, color1) {
+function sendmouse(xpos, ypos, color1, pX, pY) {
 
   console.log("sendmouse: " + xpos + " " + ypos);
 
   var data = {
     x: xpos,
     y: ypos,
-    color: color1
+    color: color1,
+    px: pX,
+    py: pY
   };
 
 

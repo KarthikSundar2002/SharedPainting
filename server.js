@@ -16,28 +16,10 @@ app.use(express.static('public'));
 
 var io = require('socket.io')(server);
 
-io.sockets.on('connection',
-
-  function (socket) {
-  
-    console.log("We have a new client: " + socket.id);
-
-
-    socket.on('mouse',
-      function(data) {
-
-        console.log("Received: 'mouse' " + data.x + " " + data.y);
-      
-
+io.sockets.on('connection',socket => {
+    socket.on('mouse',data => {
         socket.broadcast.emit('mouse', data);
-        
-
-
       }
     );
-    
-    socket.on('disconnect', function() {
-      console.log("Client has disconnected");
-    });
   }
 );
