@@ -2,6 +2,8 @@ let strokeW;
 let slider;
 var socket;
 let HOST;
+let Room;
+
 function setup() {
   createCanvas(windowWidth, 800);
   background(0);
@@ -11,7 +13,9 @@ function setup() {
   slider.position(width/2 - 150, height + 10);
   HOST = location.origin.replace(/^http/, 'ws')
   socket = io.connect(HOST);
-
+  socket.on('serverMsg',data => {
+    Room = data;
+  })
   socket.on('mouse',(data) => {
       fill(data.color);
       stroke(data.color);
@@ -40,6 +44,7 @@ function sendmouse(xpos, ypos, color1, pX, pY, strokeW) {
 
 
   var data = {
+    room: Room,
     x: xpos,
     y: ypos,
     color: color1,
